@@ -1,31 +1,16 @@
-CC = gfortran
-CC_FLAGS = -ffree-form -c
+SOURCES = src
+OBJECTS = objs
+MODULES = mods
+CLEAN_DIRS = $(SOURCES) $(OBJECTS) $(MODULES)
 
-all: main
+.PHONY: clean build
 
-main: main.o
-	$(CC) *.o -o main
+all: build
 
-init.o: init.f
-	$(CC) $(CC_FLAGS) init.f
-
-equation.o: equation.f
-	$(CC) $(CC_FLAGS) equation.f
-
-func.o: func.f
-	$(CC) $(CC_FLAGS) func.f
-
-integral.o: integral.f
-	$(CC) $(CC_FLAGS) integral.f
-
-integral1.o: integral1.f
-	$(CC) $(CC_FLAGS) integral1.f
-
-nderiv.o: nderiv.f
-	$(CC) $(CC_FLAGS) nderiv.f
-
-main.o: main.f
-	$(CC) $(CC_FLAGS) main.f
+build:
+	$(MAKE) -C $(SOURCES) all
 
 clean:
-	rm -f *.o *.mod main
+	@for a in $(CLEAN_DIRS); do \
+	echo "make $$a"; \
+	$(MAKE) -C $$a clean; done
